@@ -33,29 +33,46 @@ g = strength ./ (4*pi*r);
 % condition if the boundary condition is not axisymmetric
 
 %% Integral equation
-% 0th fourier mode of double layer potential kernel
+D0 = kernel('axissymlap','d',1);
 S0 = kernel('axissymlap','s',1);
 
-% creates the matrix mapping boundary points to boundary points
 opts = [];
-A = chunkermat(chnkr, S0, opts);
+Dmat = chunkermat(chnkr, D0, opts);
+A = Dmat - 0.5*eye(npts);
 
-% solve for the density
-sigma = gmres(A, g, [], 1e-12, npts);
+% Single-layer potential of constant density 1 on the boundary
+one_density = ones(npts,1);
+s_col = chunkermat(chnkr, S0, opts) * one_density;
+
+% Add one constraint to fix the nullspace of the double layer density.
+% A simple choice is mean(mu)=0.
+w = chnkr.wts(:);
+constraint = w.';
+
+% Augmented system:
+Aug = [A, s_col;
+       constraint, 0];
+
+rhs = [g; 0];
+sol = gmres(Aug, rhs, [], 1e-12, npts+1);
+
+mu = sol(1:npts);
+alpha = sol(end);
 
 %% Evaluate at off surface point
-target = [3.0;0.0;2.0]; % target in cartesion coordinates
-target_cyl = [3.0;2.0]; % target in cylindrical coordinates
+target = [3.0;0.0;2.0];
+target_cyl = [3.0;2.0];
 
-% evaluate at target
-% chunkerkerneval evaluate the kernel at the target using adaptive 
-% quadrature with our solved density sigma
 opts = [];
-u_sol = chunkerkerneval(chnkr, S0, sigma, target_cyl, opts);
+
+u_D = chunkerkerneval(chnkr, D0, mu, target_cyl, opts);
+u_S = chunkerkerneval(chnkr, S0, one_density, target_cyl, opts);
+
+u_sol = u_D + alpha*u_S
 
 % compute the exact solution explicitly
 r = vecnorm(target - charge).';
-u_true = strength./(4*pi*r);
+u_true = strength./(4*pi*r)
 
 % compute the error
 error = (u_sol-u_true)/norm(u_true)
