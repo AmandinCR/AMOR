@@ -1,12 +1,13 @@
 % Solve Laplace PDE with a sphere boundary
 clearvars;
 close all;
-format long e;
 
 %% geometry: sphere
 % only discretize the generating curve of the sphere
 [chnkr] = get_sphere_geometry();
-plot(chnkr)
+plot(chnkr,'b-x')
+hold on
+quiver(chnkr,'r')
 
 % everything is in cylindrical coordinates but ignore theta part because
 % its irrelevant due to axisymmtric boundary condition and solution
