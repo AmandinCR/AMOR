@@ -1,4 +1,4 @@
-% Solve Laplace PDE with a sphere boundary axisymmetric about (1,1,t)
+% Solve Laplace PDE with a sphere boundary axisymmetric about (1,2,t)
 clearvars;
 close all;
 format long e;
@@ -15,7 +15,7 @@ format long e;
 npts  = chnkr.npt; % the total number of points on the sphere
 src = chnkr.r(:,:); % generating curve points [r; z]
 
-p_modes = 16; % number of positive fourier modes
+p_modes = 5; % number of positive fourier modes
 n_modes = 2*p_modes + 1; % number of fourier modes (must be odd for pos/0/neg)
 
 %% axisymmetric boundary condition
