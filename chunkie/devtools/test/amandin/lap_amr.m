@@ -8,7 +8,7 @@ format long e;
 npts  = chnkr.npt;
 src = chnkr.r(:,:);
 
-p_modes = 2;
+p_modes = 10;
 n_modes = 2*p_modes + 1;
 modes = -p_modes:p_modes;
 
@@ -18,10 +18,10 @@ n_obj = size(shift,1);
 %% boundary condition
 
 strength1 = 1.0;
-charge1 = [1.0;2.0;0.4];
+charge1 = [1.5;2.5;0.4];
 
 strength2 = 1.0;
-charge2 = [-1.0;1.0;-0.4];
+charge2 = [-1.5;1.5;-0.4];
 
 g_full = zeros(n_obj,n_modes,npts);
 for j=1:n_obj
@@ -74,8 +74,8 @@ alpha2_total_m = alpha2_m;
 
 d2 = blackbox_chnkeval(chnkr, chnkr, shift2, shift1, sigma2_m, alpha2_m);
 
-
-max_iter = 5;
+%% AMR iterations
+max_iter = 3;
 for i=1:max_iter
     % sphere 1 correction
     bc = -d2;

@@ -6,7 +6,6 @@ function [u] = blackbox_eval(chnkr, chnkr_targ, shift, shift_targ, sigma_m, alph
 % shift_targ - axis of symmetry for target boundary
 % sigma_m - the solved density
 % alpha_m - the solved extra parameter
-% n_modes - number of fourier modes
 
 
 npts = size(sigma_m,2);
