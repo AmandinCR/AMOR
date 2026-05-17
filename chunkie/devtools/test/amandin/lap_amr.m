@@ -80,7 +80,7 @@ bc_m = fftshift(bc_fft, 1);
 sigma1_total_m = sigma1_m;
 alpha1_total_m = alpha1_m;
 
-plot_sol(chnkr, shift, charges, strengths, sigma1_total_m, alpha1_total_m, sigma1_total_m*0, alpha1_total_m*0)
+%plot_sol(chnkr, shift, charges, strengths, sigma1_total_m, alpha1_total_m, sigma1_total_m*0, alpha1_total_m*0)
 
 % First correction on sphere 2: u2^(1)
 d1 = blackbox_chnkeval(chnkr, chnkr, shift1, shift2, sigma1_m, alpha1_m);
@@ -95,12 +95,12 @@ bc_m = fftshift(bc_fft, 1);
 sigma2_total_m = sigma2_m;
 alpha2_total_m = alpha2_m;
 
-plot_sol(chnkr, shift, charges, strengths, sigma1_total_m, alpha1_total_m, sigma2_total_m, alpha2_total_m)
+%plot_sol(chnkr, shift, charges, strengths, sigma1_total_m, alpha1_total_m, sigma2_total_m, alpha2_total_m)
 
 d2 = blackbox_chnkeval(chnkr, chnkr, shift2, shift1, sigma2_m, alpha2_m);
 
 %% AMR iterations
-max_iter = 1;
+max_iter = 5;
 for i=1:max_iter
     % sphere 1 correction
     bc = -d2;
